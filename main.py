@@ -118,3 +118,11 @@ while game_running and not player["game_over"]:
 
     else:
         print("\nInvalid choice. Please enter a number between 1 and 4.")
+
+
+if player["energy"] <= 0:
+    print("\n================================")
+    print("           GAME OVER")
+    print("================================")
+    print("You have run out of energy.")
+    print("You are stranded on Mystery Island.")

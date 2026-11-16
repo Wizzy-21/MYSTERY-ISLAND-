@@ -44,6 +44,7 @@ def move_player(player, destination):
 
     # Check whether the player has enough energy
     if player["energy"] <= 0:
+        player["game_over"] = True
         return False
 
     # Update the player's location
