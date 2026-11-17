@@ -1,106 +1,115 @@
 # MYSTERY ISLAND - THE LOST LIGHTHOUSE
 
-from game import explore_beach, create_player, move_player, collect_item, light_lighthouse
+from game import (
+    explore_beach,
+    create_player,
+    move_player,
+    collect_item,
+    light_lighthouse
+)
 
-# Display the game title
-print("================================")
-print("       MYSTERY ISLAND")
-print("       THE LOST LIGHTHOUSE")
-print("================================")
 
-# Ask for the player's name
-player_name = input("Enter your name: ")
+def play_game():
+    print("DEBUG: play_game() has started")
 
-# Create the player's game state
-player = create_player(player_name)
-
-# Welcome the player
-print(f"\nWelcome to Mystery Island, {player_name}!")
-
-# Introduce the adventure
-print("\nYou wake up on a mysterious island after a terrible storm.")
-print("Your mission is to restore the lighthouse beacon and escape.")
-
-# Display current location
-print(f"\nYou are currently at: {player['location']}")
-
-# Display energy level
-print(f"Your energy level: {player['energy']}")
-
-# Describe the beach
-print("\nYou can hear the waves crashing against the shore.")
-print("You notice a dense jungle path ahead.")
-
-# Keep the game running
-game_running = True
-
-while game_running and not player["game_over"]:
-
-    # Display player's current status
-    print("\n================================")
-    print(f"Location: {player['location']}")
-    print(f"Energy: {player['energy']}")
+    # Display the game title
+    print("================================")
+    print("       MYSTERY ISLAND")
+    print("       THE LOST LIGHTHOUSE")
     print("================================")
 
-    # Display available choices
-    print("\nWhat would you like to do?")
-    print("1. Explore")
-    print("2. Check surroundings")
-    print("3. Move to another location")
-    print("4. collect an item")
-    print("5. light the lighthouse beacon")
-    print("6. Quit")
+    # Ask for the player's name
+    player_name = input("Enter your name: ")
 
-    choice = input("\nEnter your choice: ").strip()
+    # Create the player's game state
+    player = create_player(player_name)
 
-    if choice == "1":
-        print(explore_beach())
+    # Welcome the player
+    print(f"\nWelcome to Mystery Island, {player_name}!")
 
-    elif choice == "2":
-        print("\nYou examine your surroundings carefully.")
+    # Introduce the adventure
+    print("\nYou wake up on a mysterious island after a terrible storm.")
+    print("Your mission is to restore the lighthouse beacon and escape.")
 
-    elif choice == "3":
+    print(f"\nYou are currently at: {player['location']}")
+    print(f"Your energy level: {player['energy']}")
 
-        print("\nAvailable destinations:")
+    print("\nYou can hear the waves crashing against the shore.")
+    print("You notice a dense jungle path ahead.")
 
-        # Show destinations based on current location
-        destinations = {
-            "Beach": ["Jungle"],
-            "Jungle": ["Beach", "Cave"],
-            "Cave": ["Jungle", "Old Bridge"],
-            "Old Bridge": ["Cave", "Lighthouse"],
-            "Lighthouse": ["Old Bridge"]
-        }
+    game_running = True
 
-        for destination in destinations[player["location"]]:
-            print(destination)
+    while game_running and not player["game_over"]:
 
-        destination = input("\nWhere would you like to go? ").strip().title()
+        # Display player's current status
+        print("\n================================")
+        print(f"Location: {player['location']}")
+        print(f"Energy: {player['energy']}")
+        print("================================")
 
-        if move_player(player, destination):
-            print(f"\nYou have successfully moved to {destination}!")
-        else:
-            print("\nYou cannot move there. Check your destination or energy.")
+        # Display available choices
+        print("\nWhat would you like to do?")
+        print("1. Explore")
+        print("2. Check surroundings")
+        print("3. Move to another location")
+        print("4. Collect an item")
+        print("5. Light the lighthouse beacon")
+        print("6. Quit")
 
-    elif choice == "4":
-        if player["location"] == "Beach":
-            item = "Rope"
-        elif player["location"] == "Cave":
-            item = "Lantern"
-        else:
-            print("\nThere are no items to collect here.")
-            continue
+        choice = input("\nEnter your choice: ").strip()
 
-        if collect_item(player, item):
-            print(f"\nYou collected the {item}!")
-        else:
-            print(f"\nYou have already collected the {item}.")
+        print("DEBUG: Choice received =", repr(choice))
 
-    elif choice == "5":
-        if player["location"] != "Lighthouse":
-           print("\nYou must be at the Lighthouse to activate the beacon.")
+        if choice == "1":
+            print(explore_beach())
 
-        elif light_lighthouse(player):
+        elif choice == "2":
+            print("\nYou examine your surroundings carefully.")
+
+        elif choice == "3":
+            print("\nAvailable destinations:")
+
+            destinations = {
+                "Beach": ["Jungle"],
+                "Jungle": ["Beach", "Cave"],
+                "Cave": ["Jungle", "Old Bridge"],
+                "Old Bridge": ["Cave", "Lighthouse"],
+                "Lighthouse": ["Old Bridge"]
+            }
+
+            for destination in destinations[player["location"]]:
+                print(destination)
+
+            destination = input("\nWhere would you like to go? ").strip().title()
+
+            if move_player(player, destination):
+                print(f"\nYou have successfully moved to {destination}!")
+            else:
+                print("\nYou cannot move there. Check your destination or energy.")
+
+        elif choice == "4":
+
+            if player["location"] == "Beach":
+                item = "Rope"
+
+            elif player["location"] == "Cave":
+                item = "Lantern"
+
+            else:
+                print("\nThere are no items to collect here.")
+                continue
+
+            if collect_item(player, item):
+                print(f"\nYou collected the {item}!")
+            else:
+                print(f"\nYou have already collected the {item}.")
+
+        elif choice == "5":
+
+            if player["location"] != "Lighthouse":
+                print("\nYou must be at the Lighthouse to activate the beacon.")
+
+            elif light_lighthouse(player):
                 print("\n================================")
                 print("       BEACON RESTORED!")
                 print("================================")
@@ -109,20 +118,45 @@ while game_running and not player["game_over"]:
                 print("A rescue boat spots your signal.")
                 print("YOU HAVE ESCAPED MYSTERY ISLAND!")
 
-        else:
-            print("\nYou need the Lantern to light the beacon.")
+        elif choice == "6":
+            print(f"\nGoodbye, {player_name}! Thanks for playing.")
+            game_running = False
 
-    elif choice == "6":
-        print(f"\nGoodbye, {player_name}! Thanks for playing.")
-        game_running = False
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 6.")
+
+    # Check whether the player has run out of energy
+    if player["energy"] <= 0:
+        print("\n================================")
+        print("           GAME OVER")
+        print("================================")
+        print("You have run out of energy.")
+        print("You are stranded on Mystery Island.")
+
+
+# REPLAY SYSTEM
+
+while True:
+
+    play_game()
+
+    print("\n================================")
+    print("       GAME FINISHED")
+    print("================================")
+
+    print("\nWould you like to play again?")
+    print("1. Yes, start a new game")
+    print("2. No, exit game")
+
+    replay_choice = input("\nEnter your choice: ").strip()
+
+    if replay_choice == "1":
+        print("\nStarting a new adventure...\n")
+
+    elif replay_choice == "2":
+        print("\nThank you for playing Mystery Island!")
+        print("See you on your next adventure.")
+        break
 
     else:
-        print("\nInvalid choice. Please enter a number between 1 and 4.")
-
-
-if player["energy"] <= 0:
-    print("\n================================")
-    print("           GAME OVER")
-    print("================================")
-    print("You have run out of energy.")
-    print("You are stranded on Mystery Island.")
+        print("\nInvalid choice. Please enter 1 or 2.")
