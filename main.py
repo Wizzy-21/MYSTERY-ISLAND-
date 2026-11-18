@@ -1,11 +1,12 @@
 # MYSTERY ISLAND - THE LOST LIGHTHOUSE
 
 from game import (
-    explore_beach,
+    explore_location,
     create_player,
     move_player,
     collect_item,
-    light_lighthouse
+    light_lighthouse,
+    check_surroundings
 )
 
 
@@ -61,10 +62,10 @@ def play_game():
         print("DEBUG: Choice received =", repr(choice))
 
         if choice == "1":
-            print(explore_beach())
+            print(explore_location(player))
 
         elif choice == "2":
-            print("\nYou examine your surroundings carefully.")
+            print(check_surroundings(player))
 
         elif choice == "3":
             print("\nAvailable destinations:")
